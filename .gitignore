@@ -3,3 +3,5 @@ volumes/web-nage-libre-logs/*
 !volumes/web-nage-libre-logs/.gitkeep
 volumes/nage-libre/*
 !volumes/nage-libre/.gitkeep
+volumes/web-nage-libre-10-logs/*
+volumes/web-nage-libre_db/*
