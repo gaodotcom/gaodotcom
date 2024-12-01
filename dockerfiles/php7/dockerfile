@@ -1,0 +1,9 @@
+FROM phpdockerio/php74-fpm
+LABEL description="php7"
+RUN apt-get update
+#RUN apt-get -y install sendmail
+RUN apt-get -y install php7.4-mysql php7.4-geoip php7.4-curl php7.4-soap php7.4-gd php7.4-intl php-pear php7.4-imap php7.4-mcrypt php7.4-ldap php7.4-redis php7.4-pspell php7.4-sqlite3 php7.4-tidy php7.4-xmlrpc php7.4-xsl php7.4-mbstring \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN service php7.4-fpm restart
+RUN mkdir -p /var/www/nage-libre-drupal/
+RUN chmod 777 /var/www/nage-libre-drupal/

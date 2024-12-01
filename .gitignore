@@ -1,0 +1,5 @@
+.env
+volumes/web-nage-libre-logs/*
+!volumes/web-nage-libre-logs/.gitkeep
+volumes/nage-libre/*
+!volumes/nage-libre/.gitkeep

@@ -1,0 +1,60 @@
+FROM phpdockerio/php:8.2-fpm
+LABEL description="php:8.2"
+
+RUN mkdir -p /srv/http/drupal
+
+# Mettre à jour les paquets et installer les dépendances
+RUN apt-get update && apt-get install -y sudo sendmail curl vim nano telnet iproute2 iputils-ping traceroute
+#    libfreetype6-dev libjpeg62-turbo-dev libpng-dev unzip libzip-dev \
+
+RUN apt-get -y install php8.2-mysql php8.2-curl php8.2-gd php8.2-intl php8.2-imap php8.2-mcrypt php8.2-ldap \
+  php8.2-dom php8.2-gd php8.2-mbstring \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y mariadb-client
+
+# Installer les extensions PHP nécessaires
+#RUN docker-php-ext-install pdo pdo_mysql zip opcache
+#RUN pecl install redis && docker-php-ext-enable redis
+
+# Configurer et installer l'extension GD
+#RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+#    && docker-php-ext-install -j$(nproc) gd
+
+# Installer l'extension zip
+#RUN docker-php-ext-install zip
+
+# Nettoyer le cache des paquets
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer --version
+#ADD config/php8/cndp-MISSOURI-CA.crt /usr/local/share/ca-certificates
+#RUN update-ca-certificates
+#RUN service php8.2-fpm restart
+
+# Ajouter l'alias pour Drush
+RUN echo "alias a='alias'" >> ~/.bashrc
+RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc
+RUN echo "alias dd='./vendor/bin/drush'" >> ~/.bashrc
+RUN echo "alias ddd='dd --debug'" >> ~/.bashrc
+RUN echo "alias dds='dd status'" >> ~/.bashrc
+RUN echo "alias dd.lg='dd list | grep'" >> ~/.bashrc
+RUN echo "alias e='exit'" >> ~/.bashrc
+RUN echo "alias c='clear'" >> ~/.bashrc
+RUN echo "alias w='cd /var/www/nage-libre-drupal-10'" >> ~/.bashrc
+
+# Créer le lien symbolique (si besoin)
+# RUN ln -s /var/www/nage-libre-drupal-10/web/nage-libre-drupal-10 ../web
+
+# Définir le répertoire de travail
+WORKDIR /var/www/nage-libre-drupal-10
+
+# Exposer le port 9000 pour PHP-FPM
+EXPOSE 9000
+
+
+# Démarrer le serveur intégré de PHP
+#EXPOSE 8181
+#CMD ["php", "-S", "0.0.0.0:8181", "-t", "/var/www/html"]
+
+
