@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     ports:
       - "8080:80"
-    hostname: nage-libre-10.dok
+    hostname: nage-libre-10.dokZ
     volumes:
       - ${SOURCES_DRUPAL_10}:/var/www/nage-libre-drupal-10:rw
       - ./volumes/web-nage-libre-10-logs/:/var/log/apache2:rw
@@ -28,34 +28,34 @@ services:
       - default
 
   php8:
-     container_name: nage-libre_php8
-     build:
-       dockerfile: ./dockerfiles/php8/dockerfile
-       context: ./
-     restart: unless-stopped
-     ports:
-       - "9002:9000"
-     volumes:
-       - ${SOURCES_DRUPAL_10}:/var/www/nage-libre-drupal-10:rw
-       - ./volumes/web-nage-libre-10-logs:/var/log:rw
-       - ./config/php8/php.ini:/usr/local/etc/php/conf.d/90-custom.ini:rw
-     networks:
-       - default
+    container_name: nage-libre_php8
+    build:
+      dockerfile: ./dockerfiles/php8/dockerfile
+      context: ./
+    restart: unless-stopped
+    ports:
+      - "9002:9000"
+    volumes:
+      - ${SOURCES_DRUPAL_10}:/var/www/nage-libre-drupal-10:rw
+      - ./volumes/web-nage-libre-10-logs:/var/log:rw
+      - ./config/php8/php.ini:/usr/local/etc/php/conf.d/90-custom.ini:rw
+    networks:
+      - default
 
   php7:
-      container_name: nage-libre_php7
-      build:
-        dockerfile: ./dockerfiles/php7/dockerfile
-        context: ./
-      restart: unless-stopped
-      ports:
-        - "9001:9000"
-      volumes:
-        - ${SOURCES_DRUPAL}:/var/www/nage-libre-drupal:rw
-        - ./volumes/web-nage-libre-logs:/var/log:rw
-        - ./config/php7/php.ini:/usr/local/etc/php/7.4/fpm/php.ini:rw
-      networks:
-        - default
+    container_name: nage-libre_php7
+    build:
+      dockerfile: ./dockerfiles/php7/dockerfile
+      context: ./
+    restart: unless-stopped
+    ports:
+      - "9001:9000"
+    volumes:
+      - ${SOURCES_DRUPAL}:/var/www/nage-libre-drupal:rw
+      - ./volumes/web-nage-libre-logs:/var/log:rw
+      - ./config/php7/php.ini:/usr/local/etc/php/7.4/fpm/php.ini:rw
+    networks:
+      - default
 
   mariadb:
     container_name: nage-libre_db
@@ -76,6 +76,8 @@ services:
       - --character-set-server=utf8
       - --collation-server=utf8_general_ci
       - --init-file=/data/application/init.sql
+    networks:
+      - default
 
 networks:
   default:
